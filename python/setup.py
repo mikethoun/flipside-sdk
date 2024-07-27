@@ -11,13 +11,9 @@ with open("./VERSION") as f:
 with open("requirements.txt", "r") as fh:
     requirements = fh.readlines()
 
-
-with open("package_name.txt", "r") as fh:
-    package_name = fh.read().strip().lower()
-
 setup(
     install_requires=[req for req in requirements if req[:2] != "# "],
-    name=package_name,
+    name="flipside",
     version=version,
     author="dev@flipsidecrypto.com",
     author_email="dev@flipsidecrypto.com",
