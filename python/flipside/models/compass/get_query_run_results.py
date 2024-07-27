@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Union, Annotated
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -20,7 +20,7 @@ class Filter(BaseModel):
     lt: Optional[Any] = None
     lte: Optional[Any] = None
     like: Optional[Any] = None
-    in_: Optional[Annotated[List[Any], Field(alias="in")]] = None
+    in_: Optional[List[Any]] = Field(None, alias="in")
     notIn: Optional[List[Any]] = None
 
     model_config = {
