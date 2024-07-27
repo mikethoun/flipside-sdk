@@ -1,6 +1,6 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Annotated
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .core.page import Page
 from .core.page_stats import PageStats
@@ -20,12 +20,11 @@ class Filter(BaseModel):
     lt: Optional[Any] = None
     lte: Optional[Any] = None
     like: Optional[Any] = None
-    in_: Optional[List[Any]] = None
+    in_: Optional[Annotated[List[Any], Field(alias="in")]] = None
     notIn: Optional[List[Any]] = None
 
     model_config = {
-        "populate_by_name": True,
-        "fields": {"in_": "in"}
+        "populate_by_name": True
     }
 
     def dict(self, *args, **kwargs) -> dict:
