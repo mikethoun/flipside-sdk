@@ -23,8 +23,10 @@ class Filter(BaseModel):
     in_: Optional[List[Any]] = None
     notIn: Optional[List[Any]] = None
 
-    class Config:
-        fields = {"in_": "in"}
+    model_config = {
+        "populate_by_name": True,
+        "fields": {"in_": "in"}
+    }
 
     def dict(self, *args, **kwargs) -> dict:
         kwargs.setdefault("exclude_none", True)  # Exclude keys with None values
