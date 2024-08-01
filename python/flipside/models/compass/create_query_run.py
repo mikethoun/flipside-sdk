@@ -1,6 +1,5 @@
-from typing import Any, Dict, List, Union
-
-from pydantic import BaseModel
+from typing import List
+from pydantic import BaseModel, Field
 
 from .core.query_request import QueryRequest
 from .core.query_run import QueryRun
@@ -10,7 +9,6 @@ from .core.sql_statement import SqlStatement
 from .core.tags import Tags
 
 
-# Request
 class CreateQueryRunRpcParams(BaseModel):
     resultTTLHours: int
     maxAgeMinutes: int
@@ -19,18 +17,33 @@ class CreateQueryRunRpcParams(BaseModel):
     dataSource: str
     dataProvider: str
 
+    model_config = {
+        "validate_assignment": True,
+    }
+
 
 class CreateQueryRunRpcRequest(RpcRequest):
-    method: str = "createQueryRun"
+    method: str = Field("createQueryRun", const=True)
     params: List[CreateQueryRunRpcParams]
 
+    model_config = {
+        "validate_assignment": True,
+    }
 
-# Response
+
 class CreateQueryRunRpcResult(BaseModel):
     queryRequest: QueryRequest
     queryRun: QueryRun
     sqlStatement: SqlStatement
 
+    model_config = {
+        "validate_assignment": True,
+    }
+
 
 class CreateQueryRunRpcResponse(RpcResponse):
-    result: Union[CreateQueryRunRpcResult, None]
+    result: CreateQueryRunRpcResult | None = None
+
+    model_config = {
+        "validate_assignment": True,
+    }
