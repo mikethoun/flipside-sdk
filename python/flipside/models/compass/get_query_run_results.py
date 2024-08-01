@@ -1,5 +1,4 @@
-from typing import Any, Dict, List, Optional, Union
-
+from typing import Any, List
 from pydantic import BaseModel, Field
 
 from .core.page import Page
@@ -10,28 +9,28 @@ from .core.rpc_request import RpcRequest
 from .core.rpc_response import RpcResponse
 
 
-# Request
 class Filter(BaseModel):
     column: str
-    eq: Optional[Any] = None
-    neq: Optional[Any] = None
-    gt: Optional[Any] = None
-    gte: Optional[Any] = None
-    lt: Optional[Any] = None
-    lte: Optional[Any] = None
-    like: Optional[Any] = None
-    in_: Optional[List[Any]] = Field(None, alias="in")
-    notIn: Optional[List[Any]] = None
+    eq: Any | None = None
+    neq: Any | None = None
+    gt: Any | None = None
+    gte: Any | None = None
+    lt: Any | None = None
+    lte: Any | None = None
+    like: Any | None = None
+    in_: List[Any] | None = Field(None, alias="in")
+    notIn: List[Any] | None = None
 
     model_config = {
-        "populate_by_name": True
+        "populate_by_name": True,
+        "validate_assignment": True,
     }
 
     def dict(self, *args, **kwargs) -> dict:
-        kwargs.setdefault("exclude_none", True)  # Exclude keys with None values
+        kwargs.setdefault("exclude_none", True)
         result = super().dict(*args, **kwargs)
         if "in_" in result:
-            result["in"] = result.pop("in_")  # convert 'in_' back to 'in'
+            result["in"] = result.pop("in_")
         return result
 
 
@@ -39,39 +38,58 @@ class SortBy(BaseModel):
     column: str
     direction: str
 
+    model_config = {
+        "validate_assignment": True,
+    }
+
 
 class GetQueryRunResultsRpcParams(BaseModel):
     queryRunId: str
     format: ResultFormat
-    filters: Optional[Union[List[Filter], None]] = []
-    sortBy: Optional[Union[List[SortBy], None]] = []
+    filters: List[Filter] | None = []
+    sortBy: List[SortBy] | None = []
     page: Page
 
+    model_config = {
+        "validate_assignment": True,
+    }
+
     def dict(self, *args, **kwargs) -> dict:
-        kwargs.setdefault("exclude_none", True)  # Exclude keys with None values
+        kwargs.setdefault("exclude_none", True)
         return super().dict(*args, **kwargs)
 
 
 class GetQueryRunResultsRpcRequest(RpcRequest):
-    method: str = "getQueryRunResults"
+    method: str = Field("getQueryRunResults", const=True)
     params: List[GetQueryRunResultsRpcParams]
 
+    model_config = {
+        "validate_assignment": True,
+    }
+
     def dict(self, *args, **kwargs) -> dict:
-        kwargs.setdefault("exclude_none", True)  # Exclude keys with None values
+        kwargs.setdefault("exclude_none", True)
         return super().dict(*args, **kwargs)
 
 
-# Response
 class GetQueryRunResultsRpcResult(BaseModel):
-    columnNames: Union[Optional[List[str]], None]
-    columnTypes: Union[Optional[List[str]], None]
-    rows: Union[List[Any], None]
-    page: Union[PageStats, None]
-    sql: Union[str, None]
-    format: Union[ResultFormat, None]
+    columnNames: List[str] | None = None
+    columnTypes: List[str] | None = None
+    rows: List[Any] | None = None
+    page: PageStats | None = None
+    sql: str | None = None
+    format: ResultFormat | None = None
     originalQueryRun: QueryRun
-    redirectedToQueryRun: Union[QueryRun, None]
+    redirectedToQueryRun: QueryRun | None = None
+
+    model_config = {
+        "validate_assignment": True,
+    }
 
 
 class GetQueryRunResultsRpcResponse(RpcResponse):
-    result: Union[GetQueryRunResultsRpcResult, None]
+    result: GetQueryRunResultsRpcResult | None = None
+
+    model_config = {
+        "validate_assignment": True,
+    }

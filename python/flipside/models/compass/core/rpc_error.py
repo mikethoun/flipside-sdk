@@ -1,9 +1,12 @@
-from typing import Any, Optional
-
-from pydantic import BaseModel
+from typing import Any
+from pydantic import BaseModel, Field
 
 
 class RpcError(BaseModel):
     code: int
     message: str
-    data: Optional[Any]
+    data: Any | None = Field(None)
+
+    model_config = {
+        "validate_assignment": True,
+    }
