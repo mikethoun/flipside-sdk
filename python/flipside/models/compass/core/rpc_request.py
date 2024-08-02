@@ -1,13 +1,10 @@
-from typing import Any, Dict, List
-from pydantic import BaseModel, Field
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
 
 
 class RpcRequest(BaseModel):
-    jsonrpc: str = Field("2.0", const=True)
+    jsonrpc: str = "2.0"
     method: str
     params: List[Dict[str, Any]]
-    id: int = Field(1, const=True)
-
-    model_config = {
-        "validate_assignment": True,
-    }
+    id: int = 1

@@ -1,40 +1,28 @@
-from typing import List
-from pydantic import BaseModel, Field
+from typing import Dict, List, Optional, Union
+
+from pydantic import BaseModel
 
 from .core.query_run import QueryRun
 from .core.rpc_request import RpcRequest
 from .core.rpc_response import RpcResponse
+from .core.tags import Tags
 
 
+# Request
 class GetQueryRunRpcRequestParams(BaseModel):
     queryRunId: str
 
-    model_config = {
-        "validate_assignment": True,
-    }
-
 
 class GetQueryRunRpcRequest(RpcRequest):
-    method: str = Field("getQueryRun", const=True)
+    method: str = "getQueryRun"
     params: List[GetQueryRunRpcRequestParams]
 
-    model_config = {
-        "validate_assignment": True,
-    }
 
-
+# Response
 class GetQueryRunRpcResult(BaseModel):
     queryRun: QueryRun
-    redirectedToQueryRun: QueryRun | None = None
-
-    model_config = {
-        "validate_assignment": True,
-    }
+    redirectedToQueryRun: Optional[QueryRun]
 
 
 class GetQueryRunRpcResponse(RpcResponse):
-    result: GetQueryRunRpcResult | None = None
-
-    model_config = {
-        "validate_assignment": True,
-    }
+    result: Union[GetQueryRunRpcResult, None]
