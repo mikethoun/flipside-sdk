@@ -1,4 +1,6 @@
-from pydantic import BaseModel, Field
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
 
 from .tags import Tags
 
@@ -15,7 +17,3 @@ class QueryRequest(BaseModel):
     queryRunId: str
     createdAt: str
     updatedAt: str
-
-    model_config = {
-        "validate_assignment": True,
-    }

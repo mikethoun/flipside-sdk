@@ -1,13 +1,10 @@
-from typing import Optional
-from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel
 
 
 class Tags(BaseModel):
-    sdk_language: str
-    sdk_package: str
-    sdk_version: str
-    user_tag: Optional[str] = Field(None)
-
-    model_config = {
-        "validate_assignment": True,
-    }
+    sdk_package: Optional[str]
+    sdk_version: Optional[str]
+    sdk_language: Optional[str]

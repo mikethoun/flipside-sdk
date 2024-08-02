@@ -1,14 +1,17 @@
-from datetime import datetime
-from pydantic import BaseModel, Field
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel
+
+from .column_metadata import ColumnMetadata
+from .tags import Tags
 
 
 class SqlStatement(BaseModel):
     id: str
+    statementHash: str
     sql: str
-    createdAt: datetime
-    updatedAt: datetime
-    archivedAt: datetime | None = Field(None)
-
-    model_config = {
-        "validate_assignment": True,
-    }
+    columnMetadata: Optional[ColumnMetadata]
+    userId: str
+    tags: Tags
+    createdAt: str
+    updatedAt: str
